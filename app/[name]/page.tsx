@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Header from "@/components/marketing/header";
 import ClaimProfile from "@/components/marketing/claim-profile";
+import FreelancerProfile from "@/components/marketing/freelancer-profile";
+import { getMockProfile } from "@/lib/mock-profiles";
 
 interface PageProps {
   params: Promise<{ name: string }>;
@@ -11,6 +13,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { name } = await params;
   const isValid = /^[a-z0-9_-]+$/.test(name) && name.length >= 1 && name.length <= 30;
   if (!isValid) return {};
+
+  const profile = getMockProfile(name);
+  if (profile) {
+    return {
+      title: `${profile.name} - Book on Loty`,
+      description: profile.bio,
+    };
+  }
+
   const formattedName = name
     .split(/[-_]+/)
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -27,6 +38,13 @@ export default async function NamePage({ params }: PageProps) {
   const reservedWords = ["login", "terms", "privacy", "api", "dashboard", "settings", "pricing", "features"];
   if (!isValid || reservedWords.includes(name.toLowerCase())) notFound();
 
+  // Claimed handle → show the real booking profile (raw, no site header).
+  const profile = getMockProfile(name);
+  if (profile) {
+    return <FreelancerProfile data={profile} />;
+  }
+
+  // Available handle → show the claim page.
   const claimUrl = `/login?name=${encodeURIComponent(name)}`;
   const formattedName = name
     .split(/[-_]+/)

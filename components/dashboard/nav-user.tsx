@@ -1,5 +1,8 @@
 "use client"
 
+import * as React from "react"
+
+import { SettingsDialog } from "@/components/dashboard/settings-dialog"
 import {
   Avatar,
   AvatarFallback,
@@ -20,7 +23,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { ChevronsUpDownIcon, SparklesIcon, BadgeCheckIcon, CreditCardIcon, BellIcon, LogOutIcon } from "lucide-react"
+import { ChevronsUpDownIcon, SparklesIcon, BadgeCheckIcon, LogOutIcon } from "lucide-react"
 
 export function NavUser({
   user,
@@ -33,6 +36,7 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const [settingsOpen, setSettingsOpen] = React.useState(false)
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -82,20 +86,10 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSettingsOpen(true)}>
                 <BadgeCheckIcon
                 />
                 Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCardIcon
-                />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <BellIcon
-                />
-                Notifications
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
@@ -106,6 +100,7 @@ export function NavUser({
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        <SettingsDialog open={settingsOpen} onOpenChange={setSettingsOpen} user={user} />
       </SidebarMenuItem>
     </SidebarMenu>
   )
