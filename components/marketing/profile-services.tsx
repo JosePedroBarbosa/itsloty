@@ -1,11 +1,18 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import type { Service } from "@/components/marketing/freelancer-profile";
 
 const INITIAL = 3;
 
-export default function ProfileServices({ services }: { services: Service[] }) {
+export default function ProfileServices({
+  handle,
+  services,
+}: {
+  handle: string;
+  services: Service[];
+}) {
   const [expanded, setExpanded] = React.useState(false);
   const visible = expanded ? services : services.slice(0, INITIAL);
   const remaining = services.length - INITIAL;
@@ -15,9 +22,9 @@ export default function ProfileServices({ services }: { services: Service[] }) {
       <p className="text-xs font-medium uppercase tracking-wider text-neutral-400">Services</p>
       <div className="mt-2 divide-y divide-neutral-100">
         {visible.map((s) => (
-          <a
+          <Link
             key={s.name}
-            href="#"
+            href={`/${handle}/${s.slug}`}
             className="group flex items-center justify-between gap-6 py-5 transition-opacity hover:opacity-70"
           >
             <div className="min-w-0">
@@ -39,7 +46,7 @@ export default function ProfileServices({ services }: { services: Service[] }) {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
               </svg>
             </div>
-          </a>
+          </Link>
         ))}
 
         {!expanded && remaining > 0 && (

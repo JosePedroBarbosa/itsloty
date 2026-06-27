@@ -1,7 +1,9 @@
 import Image from "next/image";
+import { BadgeCheckIcon } from "lucide-react";
 import ProfileServices from "@/components/marketing/profile-services";
 
 export type Service = {
+  slug: string;
   name: string;
   duration: string;
   description: string;
@@ -33,18 +35,21 @@ export function sampleFreelancer(name: string, handle: string): FreelancerData {
     avatar: "/mascot.png",
     services: [
       {
+        slug: "intro-call",
         name: "Intro call",
         duration: "30 min",
         description: "A quick chat to see if we're a good fit.",
         price: "Free",
       },
       {
+        slug: "design-consultation",
         name: "Design consultation",
         duration: "60 min",
         description: "A focused audit of your product with clear next steps.",
         price: "€120",
       },
       {
+        slug: "design-sprint",
         name: "Design sprint",
         duration: "90 min",
         description: "A deep working session on your key user flows.",
@@ -56,13 +61,7 @@ export function sampleFreelancer(name: string, handle: string): FreelancerData {
 
 function VerifiedBadge() {
   return (
-    <svg className="size-4 text-neutral-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-      <path
-        fillRule="evenodd"
-        d="M10 1.5l1.9 1.3 2.3-.2 1 2 2 1-.2 2.3 1.3 1.9-1.3 1.9.2 2.3-2 1-1 2-2.3-.2L10 18.5l-1.9-1.3-2.3.2-1-2-2-1 .2-2.3L1.7 8l1.3-1.9-.2-2.3 2-1 1-2 2.3.2L10 1.5zm3.2 6.1a1 1 0 00-1.4-1.4L9 9l-.8-.8a1 1 0 10-1.4 1.4l1.5 1.5a1 1 0 001.4 0l3.5-3.5z"
-        clipRule="evenodd"
-      />
-    </svg>
+    <BadgeCheckIcon className="size-[18px] fill-neutral-900 text-white" aria-hidden="true" />
   );
 }
 
@@ -111,7 +110,7 @@ export default function FreelancerProfile({ data }: { data: FreelancerData }) {
       </div>
 
         {/* Services */}
-        <ProfileServices services={data.services} />
+        <ProfileServices handle={data.handle} services={data.services} />
       </div>
 
       {/* Footer pinned to the bottom of the page */}
